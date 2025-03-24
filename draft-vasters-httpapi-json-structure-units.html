@@ -1,0 +1,1904 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Greek,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>JSON Structure Symbols, Scientific Units, and Currencies</title>
+<meta content="Clemens Vasters" name="author">
+<meta content='
+       This document specifies "JSON Structure Symbols, Scientific Units, and
+Currencies", an extension to JSON Structure Core. This specification defines a
+set of annotation keywords for associating scientific unit and currency metadata
+and constraints, primarily for use with numeric values. 
+       JSON Structure Scientific Units provides a mechanism for schema authors to
+explicitly declare the unit associated with numeric data, thereby enabling
+precise mapping between schema representations and external data systems. 
+    ' name="description">
+<meta content="xml2rfc 3.28.0" name="generator">
+<meta content="next generation" name="keyword">
+<meta content="unicorn" name="keyword">
+<meta content="sparkling distributed ledger" name="keyword">
+<meta content="draft-vasters-httpapi-json-structure-units" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.28.0
+    Python 3.12.9
+    ConfigArgParse 1.7
+    google-i18n-address 3.1.1
+    intervaltree 3.1.0
+    Jinja2 3.1.6
+    lxml 5.3.0
+    platformdirs 4.3.6
+    pycountry 24.6.1
+    PyYAML 6.0.2
+    requests 2.32.3
+    setuptools 70.3.0
+    wcwidth 0.2.13
+-->
+<link href="draft-vasters-httpapi-json-structure-units.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Lora SemiBold'), local('Lora-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: light dark;
+  --background-color: #fff;
+  --text-color: #222;
+  --title-color: #191919;
+  --link-color: #2a6496;
+  --highlight-color: #f9f9f9;
+  --line-color: #eee;
+  --pilcrow-weak: #ddd;
+  --pilcrow-strong: #bbb;
+  --small-font-size: 14.5px;
+  --font-mono: 'Oxygen Mono', monospace;
+  --font-title: "Sofia Sans Semi Condensed", sans-serif;
+  scrollbar-color: #bbb #eee;
+}
+body {
+  max-width: 600px;
+  margin: 75px auto;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font: 16px/22px "Lora", serif;
+  scroll-behavior: smooth;
+}
+
+.ears {
+  display: none;
+}
+
+/* headings */
+section {
+  clear: both;
+}
+.section-number {
+  padding-right: 0.5em;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+  font-weight: 680;
+  margin: 0.8em 0 0.3em;
+  font-size-adjust: 0.5;
+  color: var(--title-color);
+}
+h1#title {
+  font-size: 32px;
+  line-height: 40px;
+  clear: both;
+}
+h1#title, h1#rfcnum {
+  margin: 1.5em 0 0.2em;
+}
+h1#rfcnum + h1#title {
+  margin: 0.2em 0;
+}
+
+h1, h2, h3 {
+  font-size: 22px;
+  line-height: 27px;
+}
+h4, h5, h6 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+/* general structure */
+.author {
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+#abstract+p {
+  font-size: 18px;
+  line-height: 24px;
+}
+#abstract+p code, #abstract+p samp, #abstract+p tt {
+  font-size: 16px;
+  line-height: 0;
+}
+
+p {
+  padding: 0;
+  margin: 0.5em 0;
+  text-align: left;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+/* font-family isn't space-separated, but =~ will have to do */
+svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
+  font-family: var(--font-mono);
+}
+.alignCenter.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 0.5em 2em;
+  & :is(ol, ul) {
+    margin-left: 1em;
+  }
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+  & li {
+    margin-top: 0.5em;
+  }
+}
+:is(ul, ol).compact, .ulCompact, .olCompact {
+  margin: 0 0 0 2em;
+  & li {
+    margin: 0;
+    & :first-child { margin-top: 0; }
+    & :last-child { margin-bottom: 0; }
+  }
+}
+
+/* definition lists */
+dl {
+  clear: left;
+  --indent: 3ch;
+  /* --indent: attr(indent ch); not supported in any browser, but we can dream */
+  &.olPercent {
+    --indent: 5ch;
+    & > dt {
+      min-width: calc(var(--indent) - 2ch);
+    }
+  }
+  &.olPercent > dt {
+    float: none;
+  }
+
+  dl > dd > & {
+    margin-top: 0.5em;
+    margin-bottom: 0;
+  }
+}
+dl:not(.dlNewline) > dt {
+  float: left;
+  margin-right: 2ch;
+  min-width: 8ch;
+}
+dl > dd {
+  margin-bottom: .8em;
+  margin-left: var(--indent) !important; /* stupid element overrides */
+  min-height: 2ex;
+}
+:is(dl.compact, .dlCompact) > dd {
+  margin-bottom: 0;
+  & > :is(:first-child, .break:first-child + *) {
+    margin-top: 0;
+  }
+  & > :is(:last-child) {
+    margin-bottom: 0;
+  }
+}
+:is(dd, span).break {
+  display: none;
+}
+
+/* links */
+a, a[href].selfRef:hover {
+  text-decoration: none;
+}
+a[href] {
+  color: var(--link-color);
+}
+a[href].selfRef, .iref + a[href].internal {
+  color: var(--text-color);
+}
+a[href]:hover {
+  text-decoration: underline;
+}
+a[href].selfRef:hover {
+  background-color: var(--highlight-color);
+}
+a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
+  white-space: nowrap;
+}
+
+/* Figures */
+tt, code, pre {
+  background-color: var(--highlight-color);
+  font: 14px/22px var(--font-mono);
+}
+tt, code {
+  /* changing the font for inline elements leads to different ascender
+     and descender heights; as we want to retain baseline alignment,
+     remove leading to avoid altering the final height of lines
+     note: this fails if these blocks take an entire line,
+     a different solution would be great */
+  line-height: 0;
+}
+:is(h1, h2, h3, h4, h5, h6) :is(tt, code) {
+  font-size: 84%;
+}
+pre {
+  border: 1px solid var(--line-color);
+  font-size: 13.5px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  margin: 5px;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0.5em 0;
+  padding: 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption, caption {
+  font-style: italic;
+  margin: 0.5em 1.5em;
+  text-align: left;
+  caption-side: bottom;
+}
+@media screen {
+  /* Auto-collapse boilerplate. */
+  :is(#status-of-memo, #copyright) p {
+    margin: -2px 0;
+    max-height: 0;
+    transition: max-height 2s ease, margin 0.5s ease 0.5s;
+    overflow: hidden;
+  }
+  :is(#status-of-memo, #copyright):hover p,
+  :is(#status-of-memo, #copyright) h2:target ~ p {
+    margin: 0.5em 0;
+    max-height: 500px;
+    overflow: auto;
+  }
+  pre, svg {
+    display: inline-block;
+    /* In the horizontal direction, sometimes people make over-sized figures.
+       Scrollbars for those is therefore necessary: auto adds them as necessary..
+       In the vertical direction, the line-height can combine with the font
+       asender/descender height to produce scrollbars: hidden avoids that. */
+    overflow: auto hidden;
+  }
+  pre {
+    max-width: 100%;
+    width: calc(100% - 22px - 1em);
+  }
+  svg {
+    max-width: calc(100% - 22px - 1em);
+  }
+  figure pre {
+    display: block;
+    width: calc(100% - 25px);
+  }
+  :is(pre, svg) + .pilcrow {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding-bottom: 8px;
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 0 2em;
+  font-style: italic;
+}
+blockquote {
+  margin: 1em 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  width: auto;
+  max-width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+}
+table.right {
+  margin-left: auto;
+}
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+table.left {
+  margin-right: auto;
+}
+table .text-left {
+  text-align: left;
+}
+table .text-center {
+  text-align: center;
+}
+table .text-right {
+  text-align: right;
+}
+
+thead, tbody {
+  border: 1px solid var(--line-color);
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px 10px;
+}
+th {
+  background-color: var(--line-color);
+}
+:is(tr:nth-child(2n), thead+tbody > tr:nth-child(2n+1)) > td {
+  background-color: var(--background-color);
+}
+:is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
+  background-color: var(--highlight-color);
+}
+table caption {
+  margin: 0;
+  padding: 3px 0 3px 1em;
+}
+table p {
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  margin-left: 3px;
+  opacity: 0.2;
+  user-select: none;
+  &[href] {
+    color: var(--pilcrow-weak);
+    &:hover { text-decoration: none; }
+  }
+}
+@media not print {
+  :hover > a.pilcrow {
+    opacity: 1;
+  }
+  a.pilcrow[href]:hover {
+    color: var(--pilcrow-strong);
+    background-color: transparent;
+  }
+}
+@media print {
+  a.pilcrow {
+    display: none;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-color);
+}
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: 600;
+  font-size: var(--small-font-size);
+}
+.role {
+  font-variant: all-small-caps;
+}
+sub, sup {
+  line-height: 1;
+  font-size: 80%;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: var(--small-font-size);
+  line-height: 18px;
+  --identifier-width: 15ch;
+  & dt {
+    width: var(--identifier-width);
+    min-width: var(--identifier-width);
+    clear: left;
+    float: left;
+    text-align: right;
+    margin-right: 1ch;
+  }
+  & dd {
+    margin: 0;
+    margin-left: calc(1em + var(--identifier-width)) !important;
+    min-width: 5em;
+  }
+  & .authors {
+    & .author {
+      display: inline-block;
+      margin-right: 1.5em;
+    }
+    & .org {
+      font-style: italic;
+    }
+  }
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+
+  & nav {
+    & ul {
+      margin: 0 0.5em 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    & li {
+      line-height: 1.3em;
+      margin: 2px 0;
+      padding-left: 1.2em;
+      text-indent: -1.2em;
+    }
+  }
+  & a.xref {
+    white-space: normal;
+  }
+}
+
+.references {
+  & > dt {
+    text-align: right;
+    font-weight: bold;
+    min-width: 10ch;
+    margin-right: 1.5ch;
+    &:target::before {
+      content: "⇒";
+      margin: 0 10px 0 -25px;
+    }
+  }
+  & > dd {
+    margin-left: 12ch !important;
+    overflow: visible;
+    & .refInstance {
+      margin-bottom: 0.8em;
+    }
+    & .ascii {
+      margin-bottom: 0.25em;
+    }
+  }
+}
+
+#rfc\.index\.index + ul {
+  margin-left: 0;
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  max-width: 20em;
+  margin: 1em auto 1em 0;
+
+  & .nameRole {
+    font-weight: 700;
+    margin-left: 0;
+  }
+  & .label {
+    margin: 0.5em 0;
+  }
+  & .type {
+    display: none;
+  }
+  & .alternative-contact {
+    margin: 0.5em 0 0.25em 0;
+  }
+  & .non-ascii {
+    margin: 0 0 0 2em;
+  }
+  & div.left {
+    text-align: left;
+  }
+  & div.right {
+    text-align: right;
+  }
+}
+
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+@media (min-width: 500px) {
+  #authors-addresses > section {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  #authors-addresses > section > h2 {
+    column-span: all;
+  }
+  /* hack for break-inside: avoid-column */
+  #authors-addresses address {
+    display: inline-block;
+    break-inside: avoid-column;
+  }
+}
+
+/* Comments */
+.rfcEditorRemove p:first-of-type {
+  font-style: italic;
+}
+.cref {
+  background-color: rgba(249, 232, 105, 0.3);
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+
+@media screen {
+  #toc nav {
+    font-family: var(--font-title);
+    font-weight: 360;
+    & > ul { margin-bottom: 2em; }
+    & ul {
+      margin: 0 0 0 4px;
+      & :is(p, li) {
+        margin: 2px 0;
+      }
+    }
+  }
+  #toc a.toplink {
+    float: right;
+  }
+}
+@media not screen {
+  #toc a.toplink {
+    display: none;
+  }
+}
+
+
+/* TOC layout for smaller screens */
+@media screen and (max-width: 929px) {
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 1px 0 0 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    opacity: 0.6;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 2px 0 2px 6px;
+    padding-right: 1em;
+    font-size: 18px;
+    line-height: 24px;
+    min-width: 190px;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+    &::before { /* css hamburger */
+      float: right;
+      position: relative;
+      width: 1em;
+      height: 1px;
+      left: -164px;
+      margin: 8px 0 0 0;
+      background: white none repeat scroll 0 0;
+      box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+      content: "";
+    }
+  }
+  #toc nav {
+    display: none;
+    background-color: var(--background-color);
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+  #toc.active {
+    opacity: 1;
+    & nav { display: block; }
+  }
+  /* Make the collapsed ToC header render white on gray also when it's a link */
+  #toc h2 a,
+  #toc h2 a:is(:link, :focus, :hover),
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+  #toc a.toplink {
+    margin: 2px 0.5em 0;
+  }
+}
+
+/* TOC layout for wide screens */
+@media screen and (min-width: 930px) {
+  body {
+    padding-right: 360px;
+    padding-right: calc(min(180px + 20%, 500px));
+  }
+  #toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 480px);
+    width: 312px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 2em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+  #toc a.toplink {
+    margin: 8px 0.5em 0;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre, .vcard {
+    page-break-inside: avoid;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  :is(h2, h3, h4, h5, h6)+*, dd {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+}
+
+/* Dark mode. */
+@media (prefers-color-scheme: dark) {
+:root {
+  --background-color: #121212;
+  --text-color: #f0f0f0;
+  --title-color: #fff;
+  --link-color: #4da4f0;
+  --highlight-color: #282828;
+  --line-color: #444;
+  --pilcrow-weak: #444;
+  --pilcrow-strong: #666;
+  scrollbar-color: #777 #333;
+}
+}
+
+/* SVG Trick: a prefix match works because only black and white are allowed */
+svg :is([stroke="black"], [stroke^="#000"]) {
+  stroke: var(--text-color);
+}
+svg :is([stroke="white"], [stroke^="#fff"]) {
+  stroke: var(--background-color);
+}
+svg :is([fill="black"], [fill^="#000"], :not([fill])) {
+  fill: var(--text-color);
+}
+svg :is([fill="white"], [fill^="#fff"]) {
+  fill: var(--background-color);
+}
+</style>
+
+</head>
+<body class="xml2rfc">
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">JSON Structure Units"</td>
+<td class="right">March 2025</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Vasters</td>
+<td class="center">Expires 25 September 2025</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">WG Working Group</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-vasters-httpapi-json-structure-units</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2025-03-24" class="published">24 March 2025</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Informational</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2025-09-25">25 September 2025</time></dd>
+<dt class="label-authors">Author:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">C. Vasters</div>
+<div class="org">Microsoft Corporation</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">JSON Structure Symbols, Scientific Units, and Currencies</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">This document specifies "JSON Structure Symbols, Scientific Units, and
+Currencies", an extension to JSON Structure Core. This specification defines a
+set of annotation keywords for associating scientific unit and currency metadata
+and constraints, primarily for use with numeric values.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-2">JSON Structure Scientific Units provides a mechanism for schema authors to
+explicitly declare the unit associated with numeric data, thereby enabling
+precise mapping between schema representations and external data systems.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+</section>
+<section class="note rfcEditorRemove" id="section-note.1">
+      <h2 id="name-about-this-document">
+<a href="#name-about-this-document" class="section-name selfRef">About This Document</a>
+      </h2>
+<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">
+        The latest revision of this draft can be found at <span><a href="https://example.com/LATEST">https://example.com/LATEST</a></span>.
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-vasters-httpapi-json-structure/">https://datatracker.ietf.org/doc/draft-vasters-httpapi-json-structure/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+<p id="section-note.1-3">
+        Discussion of this document takes place on the
+        WG Working Group mailing list (<span><a href="mailto:WG@example.com">mailto:WG@example.com</a></span>),
+        which is archived at <span><a href="https://example.com/WG">https://example.com/WG</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+<p id="section-note.1-4">Source for this draft and an issue tracker can be found at
+        <span><a href="https://github.com/USER/REPO">https://github.com/USER/REPO</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 25 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2025 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Revised BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Revised BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-conventions" class="internal xref">Conventions</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-symbol-annotations" class="internal xref">Symbol Annotations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-the-symbol-keyword" class="internal xref">The <code>symbol</code> Keyword</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.1">
+                    <p id="section-toc.1-1.3.2.1.2.1.1" class="keepWithNext"><a href="#section-3.1.1" class="auto internal xref">3.1.1</a>.  <a href="#name-the-symbols-keyword" class="internal xref">The <code>symbols</code> Keyword</a></p>
+</li>
+                </ul>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-scientific-unit-annotations" class="internal xref">Scientific Unit Annotations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-the-unit-keyword" class="internal xref">The <code>unit</code> Keyword</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-unit-annotations" class="internal xref">Unit Annotations</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-unit-prefixes" class="internal xref">Unit Prefixes</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-currency-annotations" class="internal xref">Currency Annotations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-the-currency-keyword" class="internal xref">The <code>currency</code> Keyword</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-and-interoperabili" class="internal xref">Security and Interoperability Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="introduction">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">This document is a companion specification to JSON Structure Core
+<span>[<a href="#JSTRUCT-CORE" class="cite xref">JSTRUCT-CORE</a>]</span>. It defines annotation keywords that allow numeric types to be
+enriched with measurement unit or currency information.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">The primary purpose of this extension is to help numeric values be interpreted
+consistently by specifying their associated scientific units or currencies.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">This specification defines the syntax and semantics of the keywords that
+annotate numeric types with scientific unit or currency information.
+Implementations of JSON Structure Core that support this extension MUST process
+these keywords according to the rules defined herein.<a href="#section-1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="conventions">
+<section id="section-2">
+      <h2 id="name-conventions">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-conventions" class="section-name selfRef">Conventions</a>
+      </h2>
+<p id="section-2-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+"MAY", and "OPTIONAL" in this document are to be interpreted as
+described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
+appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="symbol-annotations">
+<section id="section-3">
+      <h2 id="name-symbol-annotations">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-symbol-annotations" class="section-name selfRef">Symbol Annotations</a>
+      </h2>
+<p id="section-3-1">This section defines the keywords used to annotate schema elements with symbols
+that accompany values when presented to users.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<div id="symbol-keyword">
+<section id="section-3.1">
+        <h3 id="name-the-symbol-keyword">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-the-symbol-keyword" class="section-name selfRef">The <code>symbol</code> Keyword</a>
+        </h3>
+<p id="section-3.1-1">The <code>symbol</code> keyword provides a mechanism for annotating a schema element with a
+symbol that annotates the value of the element when presented to users.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">The keyword MAY appear alongside the <code>type</code> keyword in object properties or
+array items or map values.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.1-3.1">
+            <p id="section-3.1-3.1.1">The value of <code>symbol</code> MUST be a JSON string.<a href="#section-3.1-3.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.1-3.2">
+            <p id="section-3.1-3.2.1">The string value of <code>symbol</code> SHOULD contain a Unicode character or a
+multi-character symbol that represents the value of the annotated element.<a href="#section-3.1-3.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.1-3.3">
+            <p id="section-3.1-3.3.1">The <code>symbol</code> keyword MAY be used as an annotation on any schema element.<a href="#section-3.1-3.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.1-3.4">
+            <p id="section-3.1-3.4.1"><code>symbol</code> MAY be used in conjunction with <code>unit</code> or <code>currency</code> annotations or
+independently.<a href="#section-3.1-3.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-3.1-4">Example:<a href="#section-3.1-4" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-3.1-5">
+<pre>
+{
+  "type": "number",
+  "currency": "EUR",
+  "symbol": "€"
+}
+</pre><a href="#section-3.1-5" class="pilcrow">¶</a>
+</div>
+<p id="section-3.1-6">or<a href="#section-3.1-6" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-3.1-7">
+<pre>
+{
+  "type": "number",
+  "unit": "m/s^2",
+  "symbol": "m/s²"
+}
+</pre><a href="#section-3.1-7" class="pilcrow">¶</a>
+</div>
+<p id="section-3.1-8">or<a href="#section-3.1-8" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-3.1-9">
+<pre>
+{
+  "type": "number",
+  "description": "Number of bunnies",
+  "symbol": "bunnies"
+}
+</pre><a href="#section-3.1-9" class="pilcrow">¶</a>
+</div>
+<div id="symbols-keyword">
+<section id="section-3.1.1">
+          <h4 id="name-the-symbols-keyword">
+<a href="#section-3.1.1" class="section-number selfRef">3.1.1. </a><a href="#name-the-symbols-keyword" class="section-name selfRef">The <code>symbols</code> Keyword</a>
+          </h4>
+<p id="section-3.1.1-1">The <code>symbols</code> keyword provides a mechanism for annotating a schema element with
+a set of symbols that annotate the value of the element when presented to users.<a href="#section-3.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.1-2">The keyword MAY appear alongside the <code>type</code> keyword in object properties or
+array items or map values.<a href="#section-3.1.1-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.1.1-3.1">
+              <p id="section-3.1.1-3.1.1">The value of <code>symbols</code> MUST be a <code>map</code>.<a href="#section-3.1.1-3.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.1.1-3.2">
+              <p id="section-3.1.1-3.2.1">The keys of the <code>symbols</code> map MUST be strings that represent a purpose
+indicator. The <code>lang:</code> prefix is reserved for language-specific symbols. The
+suffix after the colon specifies the language code. The language code MUST
+conform to the <span>[<a href="#RFC4646" class="cite xref">RFC4646</a>]</span> standard.<a href="#section-3.1.1-3.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.1.1-3.3">
+              <p id="section-3.1.1-3.3.1">The values of the <code>symbols</code> map MUST be strings that represent the symbol.<a href="#section-3.1.1-3.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.1.1-3.4">
+              <p id="section-3.1.1-3.4.1">The <code>symbols</code> keyword MAY be used as an annotation on any schema element.<a href="#section-3.1.1-3.4.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-3.1.1-4">Example:<a href="#section-3.1.1-4" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-3.1.1-5">
+<pre>
+{
+  "type": "number",
+  "description": "Number of bunnies",
+  "symbols": {
+    "lang:en": "Bunnies",
+    "lang:de": "Kaninchen",
+    "lang:fr": "Lapins"
+  }
+}
+</pre><a href="#section-3.1.1-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="scientific-unit-annotations">
+<section id="section-4">
+      <h2 id="name-scientific-unit-annotations">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-scientific-unit-annotations" class="section-name selfRef">Scientific Unit Annotations</a>
+      </h2>
+<p id="section-4-1">This section defines the keywords used to annotate numeric types with scientific
+unit information.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<div id="unit-keyword">
+<section id="section-4.1">
+        <h3 id="name-the-unit-keyword">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-the-unit-keyword" class="section-name selfRef">The <code>unit</code> Keyword</a>
+        </h3>
+<p id="section-4.1-1">The <code>unit</code> keyword provides a mechanism for annotating a numeric schema (or a
+schema based on a numeric extended type such as <code>number</code>, <code>int32</code>, <code>uint32</code>,
+<code>int64</code>, <code>uint64</code>, <code>int128</code>, <code>uint128</code>, <code>float</code>, <code>double</code>, or <code>decimal</code>) with
+its measurement unit.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">The keyword MAY appear alongside the <code>type</code> keyword in object properties or
+array items or map values.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.1-3.1">
+            <p id="section-4.1-3.1.1">The value of <code>unit</code> MUST be a JSON string.<a href="#section-4.1-3.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.1-3.2">
+            <p id="section-4.1-3.2.1">The string value of <code>unit</code> SHOULD contain:<a href="#section-4.1-3.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.1-3.2.2.1">
+                <p id="section-4.1-3.2.2.1.1">An SI unit symbol or derived unit symbol conforming to the Bureau
+International des Poids et Mesures (BIPM) International System of Units (SI)
+<span>[<a href="#IEEE_260.1_2024" class="cite xref">IEEE_260.1_2024</a>]</span><a href="#section-4.1-3.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.1-3.2.2.2">
+                <p id="section-4.1-3.2.2.2.1">A unit symbol defined in ISO/IEC 80000 series <span>[<a href="#IEC_80000-1_2025" class="cite xref">IEC_80000-1_2025</a>]</span><a href="#section-4.1-3.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.1-3.2.2.3">
+                <p id="section-4.1-3.2.2.3.1">A non-SI unit symbol defined in NIST Handbook 44 Appendix C
+<span>[<a href="#NIST_HB_44_2023" class="cite xref">NIST_HB_44_2023</a>]</span><a href="#section-4.1-3.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+        </ul>
+<p id="section-4.1-4">For "derived" SI units that reflect a multiplication, the unit symbols MUST be
+separated by the asterisk character (<code>*</code>). For derived units that reflect a
+division, the unit symbols MUST be separated by the forward slash (<code>/</code>). The
+notation for exponentiation MUST be indicated using the caret (<code>^</code>). For
+example, acceleration SHALL be denoted as <code>"m/s^2"</code>.<a href="#section-4.1-4" class="pilcrow">¶</a></p>
+<p id="section-4.1-5">Units that use Greek-language symbols (including supplementary or derived units)
+such as Ohm (<code>"Ω"</code>) MUST be denoted with those Greek symbols (using the
+corresponding Unicode code points).<a href="#section-4.1-5" class="pilcrow">¶</a></p>
+<p id="section-4.1-6">The <code>unit</code> keyword MAY be used as an annotation on any schema element whose
+underlying type is numeric. Schema processors that support JSON Structure
+Scientific Units MUST use the value of the <code>unit</code> keyword to interpret, convert,
+or display numeric values appropriately.<a href="#section-4.1-6" class="pilcrow">¶</a></p>
+<p id="section-4.1-7">Example:<a href="#section-4.1-7" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-4.1-8">
+<pre>
+{
+  "type": "number",
+  "unit": "m/s^2"
+}
+</pre><a href="#section-4.1-8" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="unit-annotations">
+<section id="section-4.2">
+        <h3 id="name-unit-annotations">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-unit-annotations" class="section-name selfRef">Unit Annotations</a>
+        </h3>
+<p id="section-4.2-1">This is a list of common scientific units that MAY be used with the <code>unit</code>.
+Units are defined according to ISO/IEC 80000, BIPM SI, and NIST HB44:<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-1">
+          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Measure</th>
+              <th class="text-left" rowspan="1" colspan="1">unit</th>
+              <th class="text-left" rowspan="1" colspan="1">Description</th>
+              <th class="text-left" rowspan="1" colspan="1">Reference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Length</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>m</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Meters, SI unit of length</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#IEC_80000-3_2025" class="cite xref">IEC_80000-3_2025</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Velocity</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>m/s</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Meters per second</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#IEC_80000-3_2025" class="cite xref">IEC_80000-3_2025</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Acceleration</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>m/s^2</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Meters per second squared</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#IEC_80000-3_2025" class="cite xref">IEC_80000-3_2025</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Weight</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>kg</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Kilograms, SI unit of mass</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#IEC_80000-4_2025" class="cite xref">IEC_80000-4_2025</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Time</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>s</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Seconds, SI unit of time</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#IEEE_260.1_2024" class="cite xref">IEEE_260.1_2024</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Temperature</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>K</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Kelvin, SI unit of temperature</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#IEEE_260.1_2024" class="cite xref">IEEE_260.1_2024</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Volume</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>L</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Liters, non-SI unit accepted in SI</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#IEEE_260.1_2024" class="cite xref">IEEE_260.1_2024</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Pressure</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>psi</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Pounds per square inch, non-SI unit</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#NIST_HB_44_2023" class="cite xref">NIST_HB_44_2023</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Energy</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>J</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Joules, SI unit of energy</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#IEEE_260.1_2024" class="cite xref">IEEE_260.1_2024</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Power</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>W</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Watts, SI unit of power</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#IEEE_260.1_2024" class="cite xref">IEEE_260.1_2024</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Electrical Resistance</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>Ω</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Ohms, SI unit of electrical resistance</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#IEEE_260.1_2024" class="cite xref">IEEE_260.1_2024</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Electrical Current</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>A</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Amperes, SI unit of electric current</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#IEEE_260.1_2024" class="cite xref">IEEE_260.1_2024</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Light Intensity</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>cd</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Candelas, SI unit of luminous intensity</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#IEEE_260.1_2024" class="cite xref">IEEE_260.1_2024</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Area</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>m^2</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Square meters, SI unit of area</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#IEEE_260.1_2024" class="cite xref">IEEE_260.1_2024</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Volume</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>m^3</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Cubic meters, SI unit of volume</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#IEEE_260.1_2024" class="cite xref">IEEE_260.1_2024</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Length</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>ft</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Feet, non-SI unit</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#NIST_HB_44_2023" class="cite xref">NIST_HB_44_2023</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Volume</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>gal</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Gallon, non-SI unit</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#NIST_HB_44_2023" class="cite xref">NIST_HB_44_2023</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Pressure</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>bar</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Bar, non-SI unit</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#NIST_HB_44_2023" class="cite xref">NIST_HB_44_2023</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Digital Storage</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>B</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Bytes, non-SI unit</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#IEC_80000-13_2025" class="cite xref">IEC_80000-13_2025</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Data Rate</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>bit/s</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Bits per second</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#IEC_80000-13_2025" class="cite xref">IEC_80000-13_2025</a>]</span>
+</td>
+            </tr>
+          </tbody>
+        </table>
+</section>
+</div>
+<div id="unit-prefixes">
+<section id="section-4.3">
+        <h3 id="name-unit-prefixes">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-unit-prefixes" class="section-name selfRef">Unit Prefixes</a>
+        </h3>
+<p id="section-4.3-1">The following SI prefixes MAY be used with base units:<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-2">
+          <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Prefix</th>
+              <th class="text-left" rowspan="1" colspan="1">Symbol</th>
+              <th class="text-left" rowspan="1" colspan="1">Factor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">yotta</td>
+              <td class="text-left" rowspan="1" colspan="1">Y</td>
+              <td class="text-left" rowspan="1" colspan="1">10²⁴</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">zetta</td>
+              <td class="text-left" rowspan="1" colspan="1">Z</td>
+              <td class="text-left" rowspan="1" colspan="1">10²¹</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">exa</td>
+              <td class="text-left" rowspan="1" colspan="1">E</td>
+              <td class="text-left" rowspan="1" colspan="1">10¹⁸</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">peta</td>
+              <td class="text-left" rowspan="1" colspan="1">P</td>
+              <td class="text-left" rowspan="1" colspan="1">10¹⁵</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">tera</td>
+              <td class="text-left" rowspan="1" colspan="1">T</td>
+              <td class="text-left" rowspan="1" colspan="1">10¹²</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">giga</td>
+              <td class="text-left" rowspan="1" colspan="1">G</td>
+              <td class="text-left" rowspan="1" colspan="1">10⁹</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">mega</td>
+              <td class="text-left" rowspan="1" colspan="1">M</td>
+              <td class="text-left" rowspan="1" colspan="1">10⁶</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">kilo</td>
+              <td class="text-left" rowspan="1" colspan="1">k</td>
+              <td class="text-left" rowspan="1" colspan="1">10³</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">milli</td>
+              <td class="text-left" rowspan="1" colspan="1">m</td>
+              <td class="text-left" rowspan="1" colspan="1">10⁻³</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">micro</td>
+              <td class="text-left" rowspan="1" colspan="1">μ</td>
+              <td class="text-left" rowspan="1" colspan="1">10⁻⁶</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">nano</td>
+              <td class="text-left" rowspan="1" colspan="1">n</td>
+              <td class="text-left" rowspan="1" colspan="1">10⁻⁹</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">pico</td>
+              <td class="text-left" rowspan="1" colspan="1">p</td>
+              <td class="text-left" rowspan="1" colspan="1">10⁻¹²</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">hecto</td>
+              <td class="text-left" rowspan="1" colspan="1">h</td>
+              <td class="text-left" rowspan="1" colspan="1">10²</td>
+            </tr>
+          </tbody>
+        </table>
+<p id="section-4.3-3">Examples:<a href="#section-4.3-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.3-4.1">
+            <p id="section-4.3-4.1.1"><code>"km"</code>: Kilometers<a href="#section-4.3-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.3-4.2">
+            <p id="section-4.3-4.2.1"><code>"mm"</code>: Millimeters<a href="#section-4.3-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.3-4.3">
+            <p id="section-4.3-4.3.1"><code>"μm"</code>: Micrometers<a href="#section-4.3-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.3-4.4">
+            <p id="section-4.3-4.4.1"><code>"nm"</code>: Nanometers<a href="#section-4.3-4.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.3-4.5">
+            <p id="section-4.3-4.5.1"><code>"ps"</code>: Picoseconds<a href="#section-4.3-4.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.3-4.6">
+            <p id="section-4.3-4.6.1"><code>"mΩ"</code>: Milliohms<a href="#section-4.3-4.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.3-4.7">
+            <p id="section-4.3-4.7.1"><code>"kΩ"</code>: Kilohms<a href="#section-4.3-4.7.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.3-4.8">
+            <p id="section-4.3-4.8.1"><code>"MW"</code>: Megawatts<a href="#section-4.3-4.8.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="currency-annotations">
+<section id="section-5">
+      <h2 id="name-currency-annotations">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-currency-annotations" class="section-name selfRef">Currency Annotations</a>
+      </h2>
+<p id="section-5-1">This section defines the keywords used to annotate numeric types with currency
+information.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<div id="currency-keyword">
+<section id="section-5.1">
+        <h3 id="name-the-currency-keyword">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-the-currency-keyword" class="section-name selfRef">The <code>currency</code> Keyword</a>
+        </h3>
+<p id="section-5.1-1">The <code>currency</code> keyword provides a mechanism for annotating a numeric schema (or
+a schema based on a numeric extended type such as <code>number</code>, <code>int32</code>, <code>uint32</code>,
+<code>int64</code>, <code>uint64</code>, <code>int128</code>, <code>uint128</code>, <code>float</code>, <code>double</code>, or <code>decimal</code>) with a
+currency annotation.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">The keyword MAY appear alongside the <code>type</code> keyword in object properties or
+array items or map values.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.1-3.1">
+            <p id="section-5.1-3.1.1">The value of <code>currency</code> MUST be a JSON string.<a href="#section-5.1-3.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-3.2">
+            <p id="section-5.1-3.2.1">The string value of <code>currency</code> SHOULD contain a three-letter currency code
+conforming to the <span>[<a href="#ISO_4217_2015" class="cite xref">ISO_4217_2015</a>]</span> standard.<a href="#section-5.1-3.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-3.3">
+            <p id="section-5.1-3.3.1">The <code>currency</code> keyword MAY be used as an annotation on any schema element.<a href="#section-5.1-3.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-5.1-4">Example:<a href="#section-5.1-4" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-5.1-5">
+<pre>
+{
+  "type": "number",
+  "currency": "EUR"
+}
+</pre><a href="#section-5.1-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="security-and-interoperability-considerations">
+<section id="section-6">
+      <h2 id="name-security-and-interoperabili">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-and-interoperabili" class="section-name selfRef">Security and Interoperability Considerations</a>
+      </h2>
+<p id="section-6-1">Alternate unit annotations do not affect the fundamental validation of instance
+data. They are purely metadata and MUST be ignored by validators that do not
+support this extension. Applications that rely on unit annotations for
+conversion or display MUST implement appropriate validation against recognized
+standards (BIPM SI and NIST HB44) to ensure consistency.<a href="#section-6-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="iana-considerations">
+<section id="section-7">
+      <h2 id="name-iana-considerations">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-7-1">This document has no IANA actions.<a href="#section-7-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-normative-references">
+<section id="section-8">
+      <h2 id="name-normative-references">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+      </h2>
+<dl class="references">
+<dt id="IEC_80000-13_2025">[IEC_80000-13_2025]</dt>
+      <dd>
+<span class="refAuthor">International Electrotechnical Commission</span>, <span class="refTitle">"Quantities and units – Part 13: Information science"</span>, <span class="seriesInfo">IEC Standards IEC 80000-13:2025</span>, <time datetime="2025" class="refDate">2025</time>, <span>&lt;<a href="https://webstore.iec.ch/publication/IEC80000-13-2025">https://webstore.iec.ch/publication/IEC80000-13-2025</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IEC_80000-1_2025">[IEC_80000-1_2025]</dt>
+      <dd>
+<span class="refAuthor">International Electrotechnical Commission</span>, <span class="refTitle">"Quantities and units – Part 1: General"</span>, <span class="seriesInfo">IEC Standards IEC 80000-1:2025</span>, <time datetime="2025" class="refDate">2025</time>, <span>&lt;<a href="https://webstore.iec.ch/publication/IEC80000-1-2025">https://webstore.iec.ch/publication/IEC80000-1-2025</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IEC_80000-3_2025">[IEC_80000-3_2025]</dt>
+      <dd>
+<span class="refAuthor">International Electrotechnical Commission</span>, <span class="refTitle">"Quantities and units – Part 3: Space and time"</span>, <span class="seriesInfo">IEC Standards IEC 80000-3:2025</span>, <time datetime="2025" class="refDate">2025</time>, <span>&lt;<a href="https://webstore.iec.ch/publication/IEC80000-3-2025">https://webstore.iec.ch/publication/IEC80000-3-2025</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IEC_80000-4_2025">[IEC_80000-4_2025]</dt>
+      <dd>
+<span class="refAuthor">International Electrotechnical Commission</span>, <span class="refTitle">"Quantities and units – Part 4: Electricity and magnetism"</span>, <span class="seriesInfo">IEC Standards IEC 80000-4:2025</span>, <time datetime="2025" class="refDate">2025</time>, <span>&lt;<a href="https://webstore.iec.ch/publication/IEC80000-4-2025">https://webstore.iec.ch/publication/IEC80000-4-2025</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IEEE_260.1_2024">[IEEE_260.1_2024]</dt>
+      <dd>
+<span class="refAuthor">Institute of Electrical and Electronics Engineers</span>, <span class="refTitle">"IEEE Standard for Letter Symbols for Measurement Units (SI and Other Common Units)"</span>, <span class="seriesInfo">DOI 10.1109/IEEESTD.2024.10530229</span>, <span class="seriesInfo">IEEE 260-1-2024</span>, <time datetime="2024-05" class="refDate">May 2024</time>, <span>&lt;<a href="https://ieeexplore.ieee.org/document/10530229">https://ieeexplore.ieee.org/document/10530229</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="ISO_4217_2015">[ISO_4217_2015]</dt>
+      <dd>
+<span class="refAuthor">International Organization for Standardization</span>, <span class="refTitle">"Codes for the representation of currencies and funds"</span>, <span class="seriesInfo">ISO Standards ISO 4217:2015</span>, <time datetime="2015" class="refDate">2015</time>, <span>&lt;<a href="https://www.iso.org/standard/42245.html">https://www.iso.org/standard/42245.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="JSTRUCT-CORE">[JSTRUCT-CORE]</dt>
+      <dd>
+<span class="refAuthor">Vasters, C.</span>, <span class="refTitle">"JSON Structure Core"</span>, <span>n.d.</span>, <span>&lt;<a href="https://json-structure.github.io/core/draft-vasters-httpapi-json-structure-core.html">https://json-structure.github.io/core/draft-vasters-httpapi-json-structure-core.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="NIST_HB_44_2023">[NIST_HB_44_2023]</dt>
+      <dd>
+<span class="refAuthor">Butcher</span> and <span class="refAuthor">National Institute of Standards and Technology</span>, <span class="refTitle">"Specifications, Tolerances, and Other Technical Requirements for Weighing and Measuring Devices"</span>, <span class="seriesInfo">DOI 10.6028/NIST.HB.44-2023</span>, <span class="seriesInfo">NIST Handbooks 44-2023</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://nvlpubs.nist.gov/nistpubs/hb/2023/NIST.HB.44-2023.pdf">https://nvlpubs.nist.gov/nistpubs/hb/2023/NIST.HB.44-2023.pdf</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2119">[RFC2119]</dt>
+      <dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4646">[RFC4646]</dt>
+      <dd>
+<span class="refAuthor">Phillips, A.</span> and <span class="refAuthor">M. Davis</span>, <span class="refTitle">"Tags for Identifying Languages"</span>, <span class="seriesInfo">RFC 4646</span>, <span class="seriesInfo">DOI 10.17487/RFC4646</span>, <time datetime="2006-09" class="refDate">September 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4646">https://www.rfc-editor.org/rfc/rfc4646</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8174">[RFC8174]</dt>
+    <dd>
+<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="acknowledgments">
+<section id="appendix-A">
+      <h2 id="name-acknowledgments">
+<a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+      </h2>
+<p id="appendix-A-1">TODO acknowledge.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-B">
+      <h2 id="name-authors-address">
+<a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Clemens Vasters</span></div>
+<div dir="auto" class="left"><span class="org">Microsoft Corporation</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:clemensv@microsoft.com" class="email">clemensv@microsoft.com</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>
