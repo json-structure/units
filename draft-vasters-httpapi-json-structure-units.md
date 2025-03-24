@@ -13,16 +13,15 @@ v: 3
 area: AREA
 workgroup: WG Working Group
 keyword:
- - next generation
- - unicorn
- - sparkling distributed ledger
+ - JSON
+ - schema
 venue:
   group: WG
   type: Working Group
   mail: WG@example.com
   arch: https://example.com/WG
-  github: USER/REPO
-  latest: https://example.com/LATEST
+  github: json-structure/units
+  latest: https://json-structure.github.io/units
 
 author:
  -
@@ -30,7 +29,6 @@ author:
     organization: Microsoft Corporation
     email: clemensv@microsoft.com
 
-normative:
 normative:
   RFC2119:
   RFC4646:
@@ -96,8 +94,6 @@ normative:
       ISO Standards: ISO 4217:2015
     target: https://www.iso.org/standard/42245.html
     title: Codes for the representation of currencies and funds
-
-
   JSTRUCT-CORE: 
     title: "JSON Structure Core"
     author: 
