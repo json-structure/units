@@ -94,10 +94,10 @@ normative:
       ISO Standards: ISO 4217:2015
     target: https://www.iso.org/standard/42245.html
     title: Codes for the representation of currencies and funds
-  JSTRUCT-CORE: 
+  JSTRUCT-CORE:
     title: "JSON Structure Core"
-    author: 
-      - fullname: Clemens Vasters
+    author:
+    - fullname: Clemens Vasters
     target: https://json-structure.github.io/core/draft-vasters-httpapi-json-structure-core.html
 
 informative:
@@ -108,7 +108,7 @@ informative:
 This document specifies "JSON Structure Symbols, Scientific Units, and
 Currencies", an extension to JSON Structure Core. This specification defines a
 set of annotation keywords for associating scientific unit and currency metadata
-and constraints, primarily for use with numeric values. 
+and constraints, primarily for use with numeric values.
 
 JSON Structure Scientific Units provides a mechanism for schema authors to
 explicitly declare the unit associated with numeric data, thereby enabling
