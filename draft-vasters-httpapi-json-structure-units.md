@@ -4,7 +4,7 @@ title: "JSON Structure Symbols, Scientific Units, and Currencies"
 abbrev: JSON Structure Units"
 category: info
 
-docname: draft-vasters-httpapi-json-structure-units
+docname: draft-vasters-httpapi-json-structure-units-latest
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
 date: 2025-03-24
