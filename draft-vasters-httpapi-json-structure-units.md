@@ -1,6 +1,6 @@
 ---
 
-title: "JSON Structure Symbols, Scientific Units, and Currencies"
+title: "JSON Structure: Symbols, Scientific Units, and Currencies"
 abbrev: JSON Structure Units"
 category: info
 
