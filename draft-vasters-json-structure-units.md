@@ -350,6 +350,46 @@ Example:
 }
 ~~~
 
+## Enabling the Annotations {#enabling-the-annotations}
+
+These annotations can be enabled in a schema or meta-schema by adding the
+`JSONSchemaUnits` key to the `$uses` clause when referencing the extended
+meta-schema:
+
+~~~ json
+{
+  "$schema": "https://json-structure.github.io/meta/extended/v0/#",
+  "$id": "myschema",
+  "$uses": [
+    "JSONSchemaUnits"
+  ],
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "decimal",
+      "unit": "m/s^2"
+    }
+  }
+}
+~~~
+
+The annotations are enabled by default in the validation meta-schema:
+
+~~~ json
+
+{
+  "$schema": "https://json-structure.github.io/meta/validation/v0/#",
+  "$id": "myschema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "decimal",
+      "unit": "m/s^2"
+    }
+  }
+}
+~~~
+
 # Security and Interoperability Considerations {#security-and-interoperability-considerations}
 
 Alternate unit annotations do not affect the fundamental validation of instance
