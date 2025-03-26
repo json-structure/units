@@ -2,14 +2,14 @@
 
 
 
-Building Blocks for HTTP APIs                                 C. Vasters
+WG Working Group                                              C. Vasters
 Internet-Draft                                     Microsoft Corporation
 Intended status: Informational                             24 March 2025
 Expires: 25 September 2025
 
 
        JSON Structure: Symbols, Scientific Units, and Currencies
-           draft-vasters-httpapi-json-structure-units-latest
+               draft-vasters-json-structure-units-latest
 
 Abstract
 
@@ -29,15 +29,13 @@ About This Document
    This note is to be removed before publishing as an RFC.
 
    The latest revision of this draft can be found at https://json-
-   structure.github.io/units/draft-vasters-httpapi-json-structure-
-   units.html.  Status information for this document may be found at
-   https://datatracker.ietf.org/doc/draft-vasters-httpapi-json-
-   structure-units/.
+   structure.github.io/units/draft-vasters-json-structure-units.html.
+   Status information for this document may be found at
+   https://datatracker.ietf.org/doc/draft-vasters-json-structure-units/.
 
-   Discussion of this document takes place on the Building Blocks for
-   HTTP APIs mailing list (mailto:httpapi@ietf.org), which is archived
-   at https://mailarchive.ietf.org/arch/browse/httpapi/.  Subscribe at
-   https://www.ietf.org/mailman/listinfo/httpapi/.
+   Discussion of this document takes place on the WG Working Group
+   mailing list (mailto:WG@example.com), which is archived at
+   https://example.com/WG.
 
    Source for this draft and an issue tracker can be found at
    https://github.com/json-structure/units.
@@ -462,8 +460,8 @@ Table of Contents
 
    [JSTRUCT-CORE]
               Vasters, C., "JSON Structure Core", n.d., <https://json-
-              structure.github.io/core/draft-vasters-httpapi-json-
-              structure-core.html>.
+              structure.github.io/core/draft-vasters-json-structure-
+              core.html>.
 
    [NIST_HB_44_2023]
               Butcher and National Institute of Standards and
