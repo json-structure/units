@@ -1,8 +1,8 @@
 <!-- regenerate: on (set to off if you edit this file) -->
 
-# JSON Structure Symbols, Scientific Units, and Currencies
+# JSON Structure: Symbols, Scientific Units, and Currencies
 
-This is the working area for the individual Internet-Draft, "JSON Structure Symbols, Scientific Units, and Currencies".
+This is the working area for the individual Internet-Draft, "JSON Structure: Symbols, Scientific Units, and Currencies".
 
 * [Editor's Copy](https://json-structure.github.io/units/#go.draft-vasters-json-structure-units.html)
 * [Datatracker Page](https://datatracker.ietf.org/doc/draft-vasters-json-structure-units)
