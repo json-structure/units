@@ -84,6 +84,7 @@ Table of Contents
      4.3.  Unit Prefixes
    5.  Currency Annotations
      5.1.  The currency Keyword
+     5.2.  Enabling the Annotations
    6.  Security and Interoperability Considerations
    7.  IANA Considerations
    8.  Normative References
@@ -404,6 +405,41 @@ Table of Contents
    {
      "type": "number",
      "currency": "EUR"
+   }
+
+5.2.  Enabling the Annotations
+
+   These annotations can be enabled in a schema or meta-schema by adding
+   the JSONSchemaUnits key to the $uses clause when referencing the
+   extended meta-schema:
+
+   {
+     "$schema": "https://json-structure.github.io/meta/extended/v0/#",
+     "$id": "myschema",
+     "$uses": [
+       "JSONSchemaUnits"
+     ],
+     "type": "object",
+     "properties": {
+       "name": {
+         "type": "decimal",
+         "unit": "m/s^2"
+       }
+     }
+   }
+
+   The annotations are enabled by default in the validation meta-schema:
+
+   {
+     "$schema": "https://json-structure.github.io/meta/validation/v0/#",
+     "$id": "myschema",
+     "type": "object",
+     "properties": {
+       "name": {
+         "type": "decimal",
+         "unit": "m/s^2"
+       }
+     }
    }
 
 6.  Security and Interoperability Considerations
