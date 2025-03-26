@@ -17,7 +17,7 @@
 /versioned/
 Gemfile.lock
 archive.json
-draft-vasters-httpapi-json-structure-units.xml
+draft-vasters-json-structure-units.xml
 package-lock.json
 report.xml
 !requirements.txt

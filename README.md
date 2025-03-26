@@ -4,10 +4,10 @@
 
 This is the working area for the individual Internet-Draft, "JSON Structure Symbols, Scientific Units, and Currencies".
 
-* [Editor's Copy](https://json-structure.github.io/units/#go.draft-vasters-httpapi-json-structure-units.html)
-* [Datatracker Page](https://datatracker.ietf.org/doc/draft-vasters-httpapi-json-structure-units)
-* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-vasters-httpapi-json-structure-units)
-* [Compare Editor's Copy to Individual Draft](https://json-structure.github.io/units/#go.draft-vasters-httpapi-json-structure-units.diff)
+* [Editor's Copy](https://json-structure.github.io/units/#go.draft-vasters-json-structure-units.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-vasters-json-structure-units)
+* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-vasters-json-structure-units)
+* [Compare Editor's Copy to Individual Draft](https://json-structure.github.io/units/#go.draft-vasters-json-structure-units.diff)
 
 
 ## Contributing

@@ -4,24 +4,24 @@ title: "JSON Structure: Symbols, Scientific Units, and Currencies"
 abbrev: JSON Structure Units"
 category: info
 
-docname: draft-vasters-httpapi-json-structure-units-latest
+docname: draft-vasters-json-structure-units-latest
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
 date: 2025-03-24
 consensus: true
 v: 3
-area: ""
-workgroup: "Building Blocks for HTTP APIs"
+area: AREA
+workgroup:  WG Working Group
 keyword:
  - JSON
  - schema
 venue:
-  group: "Building Blocks for HTTP APIs"
-  type: ""
-  mail: "httpapi@ietf.org"
-  arch: "https://mailarchive.ietf.org/arch/browse/httpapi/"
+  group: WG
+  type: Working Group
+  mail: WG@example.com
+  arch: https://example.com/WG
   github: "json-structure/units"
-  latest: "https://json-structure.github.io/units/draft-vasters-httpapi-json-structure-units.html"
+  latest: "https://json-structure.github.io/units/draft-vasters-json-structure-units.html"
 
 author:
  -
@@ -98,7 +98,7 @@ normative:
     title: "JSON Structure Core"
     author:
     - fullname: Clemens Vasters
-    target: https://json-structure.github.io/core/draft-vasters-httpapi-json-structure-core.html
+    target: https://json-structure.github.io/core/draft-vasters-json-structure-core.html
 
 informative:
 
