@@ -2,16 +2,16 @@
 
 title: "JSON Structure: Symbols, Scientific Units, and Currencies"
 abbrev: JSON Structure Units"
-category: info
+category: std
 
 docname: draft-vasters-json-structure-units-latest
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
-date: 2025-03-24
+date: 2025-07-02
 consensus: true
 v: 3
-area: AREA
-workgroup: TBD
+area: Web and Internet Transport
+workgroup: Building Blocks for HTTP APIs
 keyword:
  - JSON
  - schema
