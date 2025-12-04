@@ -1,13 +1,13 @@
 ---
 
 title: "JSON Structure: Symbols, Scientific Units, and Currencies"
-abbrev: JSON Structure Units"
+abbrev: "JSON Structure Units"
 category: std
 
 docname: draft-vasters-json-structure-units-latest
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
-date: 2025-07-02
+date: 2025-12-04
 consensus: true
 v: 3
 area: Web and Internet Transport
@@ -401,6 +401,11 @@ standards (BIPM SI and NIST HB44) to ensure consistency.
 This document has no IANA actions.
 
 --- back
+
+# Changes from draft-vasters-json-structure-units-00
+{:numbered="false"}
+
+- Fixed typo in document abbreviation.
 
 # Acknowledgments
 {:numbered="false"}
