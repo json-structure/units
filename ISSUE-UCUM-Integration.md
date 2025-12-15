@@ -243,7 +243,6 @@ Example:
   "symbol": "m/s²"
 }
 ```
-```
 
 ## Compatibility and Migration
 
