@@ -26,7 +26,7 @@ The current JSON Structure Units specification defines the `unit` keyword to ann
 
 ### UCUM (Unified Code for Units of Measure)
 
-UCUM is a code system maintained at https://ucum.org/ucum that provides:
+UCUM is a code system maintained at https://ucum.org/ that provides:
 
 1. **Formal Grammar:** A precise, unambiguous syntax for expressing units
 2. **Comprehensive Coverage:** Includes all contemporary units used in science, engineering, and business
@@ -236,11 +236,13 @@ array items or map values.
 
 Example:
 
+```json
 {
   "type": "number",
   "ucumUnit": "m/s2",
   "symbol": "m/s²"
 }
+```
 ```
 
 ## Compatibility and Migration
@@ -268,11 +270,10 @@ Example:
 
 ## References
 
-- UCUM Specification: https://ucum.org/ucum
+- UCUM Specification: https://ucum.org/
 - UCUM Version 2.1: https://ucum.org/ucum.html
 - HL7 FHIR Use of UCUM: http://hl7.org/fhir/datatypes.html#Quantity
-- NIST Reference on UCUM: https://www.nist.gov/pml/owm/metric-si/si-units
-- Current JSON Structure Units Spec: draft-vasters-json-structure-units.md
+- Current JSON Structure Units Spec: https://json-structure.github.io/units/draft-vasters-json-structure-units.html
 
 ## Related Work
 
