@@ -236,7 +236,6 @@ array items or map values.
 
 Example:
 
-```json
 {
   "type": "number",
   "ucumUnit": "m/s2",
