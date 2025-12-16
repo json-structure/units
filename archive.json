@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-12-14T01:26:59.528782+00:00",
+  "timestamp": "2025-12-16T01:22:34.946412+00:00",
   "repo": "json-structure/units",
   "labels": [
     {
@@ -49,6 +49,53 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
-  "pulls": []
+  "issues": [
+    {
+      "number": 2,
+      "id": "I_kwDOONqb5s7eUoiE",
+      "title": "Integration of UCUM (Unified Code for Units of Measure)",
+      "url": "https://github.com/json-structure/units/issues/2",
+      "state": "OPEN",
+      "author": "clemensv",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "## Summary\n\nThis issue proposes integrating support for UCUM (Unified Code for Units of Measure) into the JSON Structure Units specification. UCUM is a widely-adopted standard for representing units of measure in a formal, machine-parseable format, particularly in healthcare (HL7, FHIR) and scientific computing domains.\n\n## Background\n\n### Current Approach\n\nThe current JSON Structure Units specification defines the `unit` keyword to annotate numeric values with measurement units. The specification references:\n- SI units (BIPM International System of Units, IEEE 260.1-2024)\n- ISO/IEC 80000 series\n- NIST Handbook 44 for non-SI units\n\n**Current Syntax:**\n- Multiplication: `*` (asterisk)\n- Division: `/` (forward slash)\n- Exponentiation: `^` (caret)\n- Example: `\"m/s^2\"` for acceleration\n\n### UCUM (Unified Code for Units of Measure)\n\nUCUM is a code system maintained at https://ucum.org/ that provides:\n\n1. **Formal Grammar:** A precise, unambiguous syntax for expressing units\n2. **Comprehensive Coverage:** Includes all contemporary units used in science, engineering, and business\n3. **Case Sensitivity:** Distinguishes units precisely (e.g., `m` for meter, `M` for mega-prefix)\n4. **Machine Parseability:** Designed for computational processing with formal grammar\n5. **Wide Adoption:** Used extensively in healthcare (HL7 FHIR), scientific computing, and data exchange\n6. **Conversion Support:** Includes formal conversion factors between units\n\n**UCUM Syntax:**\n- Multiplication: `.` (period) or juxtaposition\n- Division: `/` (forward slash)\n- Exponentiation: digit directly after unit\n- Example: `\"m/s2\"` or `\"m.s-2\"` for acceleration\n\n### Key Differences\n\n| Aspect | Current Spec | UCUM |\n|--------|-------------|------|\n| Acceleration | `\"m/s^2\"` | `\"m/s2\"` |\n| Area | `\"m^2\"` | `\"m2\"` |\n| Multiplication | `\"N*m\"` | `\"N.m\"` |\n| Micro prefix | `\"\u03bcm\"` | `\"um\"` (ASCII-safe) |\n| Case sensitivity | Mixed | Strict (case-sensitive) |\n| Formal grammar | No | Yes (BNF grammar) |\n| Conversion factors | Not included | Included |\n\n## Motivation\n\n### Benefits of UCUM Integration\n\n1. **Interoperability:** Enable seamless data exchange with healthcare systems (HL7 FHIR), scientific databases, and other systems that use UCUM\n2. **Standardization:** Leverage an existing, well-maintained standard with formal grammar and validation tools\n3. **Precision:** Case-sensitive notation eliminates ambiguity (e.g., `m` meter vs `M` mega-prefix)\n4. **Tooling:** Existing UCUM parsers, validators, and conversion libraries could be used\n5. **Healthcare Adoption:** Critical for medical device data, clinical observations, and laboratory results\n6. **ASCII Compatibility:** UCUM provides ASCII representations for Greek symbols (e.g., `\"Ohm\"` vs `\"\u03a9\"`)\n\n### Use Cases\n\n1. **Medical Data Exchange:** Laboratory results, vital signs, medication dosages\n2. **Scientific Computing:** Research data with standardized unit notation\n3. **IoT Sensors:** Device telemetry with standardized units\n4. **International Data Exchange:** Systems requiring unambiguous unit representation\n5. **Legacy System Integration:** Many existing systems already use UCUM\n\n## Proposed Solutions\n\n### Option 1: Extend Existing `unit` Keyword\n\nAllow the `unit` keyword to accept both current syntax and UCUM syntax, with optional validation mode.\n\n**Pros:**\n- Minimal schema changes\n- Backward compatible\n- Simple for schema authors\n\n**Cons:**\n- Ambiguity in which syntax is being used\n- Difficult to validate without additional metadata\n- May confuse implementers\n\n**Example:**\n```json\n{\n  \"type\": \"number\",\n  \"unit\": \"m/s2\",\n  \"description\": \"Could be current syntax with typo or UCUM\"\n}\n```\n\n### Option 2: Add New `ucumUnit` Keyword\n\nIntroduce a dedicated keyword for UCUM units, allowing both to coexist.\n\n**Pros:**\n- Explicit and unambiguous\n- Allows both systems to be used in same schema\n- Clear migration path\n- Easy to validate\n\n**Cons:**\n- Two keywords with similar purpose\n- Potential confusion about which to use\n- More complex specification\n\n**Example:**\n```json\n{\n  \"type\": \"number\",\n  \"ucumUnit\": \"m/s2\",\n  \"symbol\": \"m/s\u00b2\"\n}\n```\n\nOr with both:\n```json\n{\n  \"type\": \"number\",\n  \"unit\": \"m/s^2\",\n  \"ucumUnit\": \"m/s2\",\n  \"description\": \"Supports both representations\"\n}\n```\n\n### Option 3: Unit System Indicator\n\nAdd a `unitSystem` keyword to specify which notation is being used.\n\n**Pros:**\n- Single `unit` keyword\n- Explicit about which system is in use\n- Extensible to other unit systems (e.g., imperial notation variations)\n- Clear validation rules\n\n**Cons:**\n- Requires an additional keyword\n- More verbose schemas\n- Need to define multiple systems\n\n**Example:**\n```json\n{\n  \"type\": \"number\",\n  \"unitSystem\": \"ucum\",\n  \"unit\": \"m/s2\"\n}\n```\n\nOr:\n```json\n{\n  \"type\": \"number\",\n  \"unitSystem\": \"si-extended\",\n  \"unit\": \"m/s^2\"\n}\n```\n\n### Option 4: Format Attribute on Unit\n\nAdd a format attribute similar to how date-time formats are handled in JSON Schema.\n\n**Pros:**\n- Follows JSON Schema patterns\n- Single unit value with format specification\n- Clear and familiar to JSON Schema users\n\n**Cons:**\n- More complex syntax\n- Requires parsing the format attribute\n\n**Example:**\n```json\n{\n  \"type\": \"number\",\n  \"unit\": {\n    \"value\": \"m/s2\",\n    \"format\": \"ucum\"\n  }\n}\n```\n\nOr simpler:\n```json\n{\n  \"type\": \"number\",\n  \"unit\": \"m/s2\",\n  \"unitFormat\": \"ucum\"\n}\n```\n\n## Recommendations\n\n### Recommended Approach: Option 2 with Migration Path\n\n1. **Add `ucumUnit` keyword** for explicit UCUM support\n2. **Keep existing `unit` keyword** unchanged for backward compatibility\n3. **Define precedence:** If both are present, `ucumUnit` takes precedence for systems that understand UCUM\n4. **Document mapping:** Provide guidance on converting between formats\n5. **Validation:** Schema validators can check UCUM syntax using existing UCUM grammar\n\n### Implementation Considerations\n\n1. **Add UCUM Reference:** Include UCUM specification in normative references\n2. **Define Syntax:** Clearly specify UCUM syntax rules in the specification\n3. **Provide Examples:** Show side-by-side comparisons of current vs UCUM notation\n4. **Validation Tools:** Reference or provide UCUM validation tools/libraries\n5. **Migration Guide:** Help existing users understand when and how to adopt UCUM\n6. **ASCII Requirement:** Decide whether to require ASCII-only UCUM codes or allow Unicode variants\n\n### Example Specification Text\n\n```markdown\n## The `ucumUnit` Keyword\n\nThe `ucumUnit` keyword provides a mechanism for annotating a numeric schema \nwith its measurement unit using UCUM (Unified Code for Units of Measure) notation.\n\nThe keyword MAY appear alongside the `type` keyword in object properties or\narray items or map values.\n\n- The value of `ucumUnit` MUST be a JSON string.\n- The string value of `ucumUnit` MUST conform to the UCUM syntax as defined in\n  the Unified Code for Units of Measure specification.\n- The `ucumUnit` keyword MAY be used in conjunction with the `unit` keyword.\n  When both are present, systems that support UCUM SHOULD use the `ucumUnit` value.\n- UCUM codes SHOULD use the case-sensitive syntax defined in the UCUM specification.\n\nExample:\n\n{\n  \"type\": \"number\",\n  \"ucumUnit\": \"m/s2\",\n  \"symbol\": \"m/s\u00b2\"\n}\n```\n\n## Compatibility and Migration\n\n### Backward Compatibility\n\n- Existing schemas using `unit` keyword remain valid\n- New schemas can use `ucumUnit` exclusively or alongside `unit`\n- Validators that don't support UCUM will ignore `ucumUnit` (annotation keyword)\n\n### Migration Strategies\n\n1. **Dual Annotation:** Include both `unit` and `ucumUnit` during transition\n2. **Healthcare Focus:** Use `ucumUnit` for medical/healthcare schemas from the start\n3. **Gradual Adoption:** Add UCUM support incrementally as tooling becomes available\n\n## Open Questions\n\n1. **ASCII vs Unicode:** Should UCUM codes be restricted to ASCII-only representations?\n2. **Validation:** Should the specification mandate UCUM validation, or leave it as optional?\n3. **Default System:** For new schemas, should there be a recommended default (current vs UCUM)?\n4. **Conversion:** Should the specification include guidance on converting between formats?\n5. **Prefixes:** How to handle differences in prefix notation (\u03bc vs u)?\n6. **Nested Units:** How to handle complex UCUM expressions with annotations?\n\n## References\n\n- UCUM Specification: https://ucum.org/\n- UCUM Version 2.1: https://ucum.org/ucum.html\n- HL7 FHIR Use of UCUM: http://hl7.org/fhir/datatypes.html#Quantity\n- Current JSON Structure Units Spec: https://json-structure.github.io/units/draft-vasters-json-structure-units.html\n\n## Related Work\n\n- HL7 FHIR Quantity datatype uses UCUM\n- SNOMED CT uses UCUM for units\n- LOINC uses UCUM for laboratory units\n- OpenEHR uses UCUM for clinical measurements\n\n",
+      "createdAt": "2025-12-15T11:16:25Z",
+      "updatedAt": "2025-12-15T11:16:25Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOONqb5s645QyI",
+      "title": "Add UCUM integration proposal for units specification",
+      "url": "https://github.com/json-structure/units/pull/1",
+      "state": "CLOSED",
+      "author": "copilot-swe-agent",
+      "authorAssociation": "NONE",
+      "assignees": [
+        "clemensv",
+        "Copilot"
+      ],
+      "labels": [],
+      "body": "Proposes integration of UCUM (Unified Code for Units of Measure) to enable healthcare interoperability and provide formal unit grammar.\n\n## Document Structure\n\n- **Background**: Compares current syntax (`m/s^2`) vs UCUM (`m/s2`), highlighting case sensitivity and formal grammar differences\n- **Four alternatives analyzed**:\n  1. Extend existing `unit` keyword (ambiguity issues)\n  2. Add `ucumUnit` keyword (recommended - explicit, backward compatible)\n  3. Add `unitSystem` indicator (verbose but extensible)\n  4. Format attribute pattern (follows JSON Schema conventions)\n- **Implementation guidance**: Migration path, example spec text, validation considerations\n- **Open questions**: ASCII vs Unicode, validation requirements, conversion guidance\n\n## Recommended Approach\n\nAdd dedicated `ucumUnit` keyword alongside existing `unit`:\n\n```json\n{\n  \"type\": \"number\",\n  \"ucumUnit\": \"m/s2\",\n  \"unit\": \"m/s^2\",\n  \"symbol\": \"m/s\u00b2\"\n}\n```\n\nEnables HL7 FHIR integration while preserving backward compatibility. Systems supporting UCUM prioritize `ucumUnit` when both present.\n\n<!-- START COPILOT CODING AGENT SUFFIX -->\n\n\n\n<!-- START COPILOT ORIGINAL PROMPT -->\n\n\n\n<details>\n\n<summary>Original prompt</summary>\n\n> file an issue to integrate https://ucum.org/ucum into teh units spec. discuss alternatives to extend the existing \"unit\" keyword or adda  new keyword.\n\n\n</details>\n\n\n\n<!-- START COPILOT CODING AGENT TIPS -->\n---\n\n\ud83d\udca1 You can make Copilot smarter by setting up custom instructions, customizing its development environment and configuring Model Context Protocol (MCP) servers. Learn more [Copilot coding agent tips](https://gh.io/copilot-coding-agent-tips) in the docs.",
+      "createdAt": "2025-12-15T11:00:27Z",
+      "updatedAt": "2025-12-15T11:16:41Z",
+      "baseRepository": "json-structure/units",
+      "baseRefName": "main",
+      "baseRefOid": "de9ff152c8b2198b1492557f756a1fc057d3931b",
+      "headRepository": "json-structure/units",
+      "headRefName": "copilot/file-issue-ucum-integration",
+      "headRefOid": "0a2675c9a365ffe97f0b226d7a5fce4ccbeacd3a",
+      "closedAt": "2025-12-15T11:16:37Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    }
+  ]
 }
