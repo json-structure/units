@@ -87,6 +87,7 @@ Table of Contents
    6.  Security and Interoperability Considerations
    7.  IANA Considerations
    8.  Normative References
+   Changes from draft-vasters-json-structure-units-01
    Changes from draft-vasters-json-structure-units-00
    Acknowledgments
    Author's Address
@@ -581,6 +582,20 @@ Table of Contents
    [UCUM]     Schadow, G. and C. J. McDonald, "The Unified Code for
               Units of Measure", 21 November 2017,
               <https://ucum.org/ucum>.
+
+Changes from draft-vasters-json-structure-units-01
+
+   *  Updated obsolete RFC 4646 reference to RFC 5646 (BCP 47).
+
+   *  Used correct term "language tag" instead of "language code" in
+      symbols section.
+
+   *  Broadened abstract opening to reflect full scope (symbols,
+      currencies).
+
+   *  Added ucumUnit keyword for UCUM (Unified Code for Units of
+      Measure) notation support, enabling interoperability with
+      healthcare and scientific systems.
 
 Changes from draft-vasters-json-structure-units-00
 
