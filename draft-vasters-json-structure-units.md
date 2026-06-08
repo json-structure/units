@@ -97,6 +97,13 @@ normative:
     author:
     - fullname: Clemens Vasters
     target: https://json-structure.github.io/core/draft-vasters-json-structure-core.html
+  UCUM:
+    title: "The Unified Code for Units of Measure"
+    author:
+      - fullname: Gunther Schadow
+      - fullname: Clement J. McDonald
+    target: https://ucum.org/ucum
+    date: 2017-11-21
 
 informative:
 
@@ -259,6 +266,64 @@ Example:
   "unit": "m/s^2"
 }
 ~~~
+
+## The `ucumUnit` Keyword {#ucum-unit-keyword}
+
+The `ucumUnit` keyword provides a mechanism for annotating a numeric schema
+(or a schema based on a numeric extended type such as `number`, `int32`,
+`uint32`, `int64`, `uint64`, `int128`, `uint128`, `float`, `double`, or
+`decimal`) with its measurement unit using UCUM (Unified Code for Units of
+Measure) {{UCUM}} notation.
+
+The keyword MAY appear alongside the `type` keyword in object properties or
+array items or map values.
+
+- The value of `ucumUnit` MUST be a JSON string.
+- The string value of `ucumUnit` MUST be a valid UCUM unit expression as
+  defined in the UCUM specification {{UCUM}}.
+- UCUM codes MUST use the case-sensitive ("c/s") variant defined in the UCUM
+  specification.
+- The `ucumUnit` keyword MAY be used in conjunction with the `unit` keyword.
+  When both are present, systems that support UCUM SHOULD prefer the
+  `ucumUnit` value for computation and conversion purposes.
+- The `ucumUnit` keyword MAY be used as an annotation on any schema element
+  whose underlying type is numeric.
+
+Example:
+
+~~~json
+{
+  "type": "number",
+  "unit": "m/s^2",
+  "ucumUnit": "m/s2",
+  "symbols": {
+    "default": "m/s²"
+  }
+}
+~~~
+
+or
+
+~~~json
+{
+  "type": "number",
+  "ucumUnit": "Cel",
+  "symbols": {
+    "default": "°C"
+  }
+}
+~~~
+
+### Compatibility with the unit Keyword {#ucum-unit-compatibility}
+
+Schemas MAY include both `unit` and `ucumUnit` to support consumers that
+understand either notation.
+
+When both are present, the values SHOULD denote the same physical quantity and
+unit.
+
+Schema validators MUST NOT reject a schema solely because both keywords are
+present.
 
 ## Unit Annotations {#unit-annotations}
 
