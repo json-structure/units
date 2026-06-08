@@ -29,7 +29,7 @@ author:
 
 normative:
   RFC2119:
-  RFC4646:
+  RFC5646:
   RFC8174:
   IEEE_260.1_2024:
     author:
@@ -108,7 +108,7 @@ Currencies", an extension to JSON Structure Core. This specification defines a
 set of annotation keywords for associating scientific unit and currency metadata
 and constraints, primarily for use with numeric values.
 
-JSON Structure Scientific Units provides a mechanism for schema authors to
+This extension provides a mechanism for schema authors to
 explicitly declare the unit associated with numeric data, thereby enabling
 precise mapping between schema representations and external data systems.
 
@@ -193,8 +193,8 @@ array items or map values.
 - The value of `symbols` MUST be a `map`.
 - The keys of the `symbols` map MUST be strings that represent a purpose
   indicator. The `lang:` prefix is reserved for language-specific symbols. The
-  suffix after the colon specifies the language code. The language code MUST
-  conform to the {{RFC4646}} standard.
+  suffix after the colon specifies the language tag. The language tag MUST
+  conform to BCP 47 {{RFC5646}}.
 - The values of the `symbols` map MUST be strings that represent the symbol.
 - The `symbols` keyword MAY be used as an annotation on any schema element.
 
