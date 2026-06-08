@@ -467,6 +467,17 @@ This document has no IANA actions.
 
 --- back
 
+# Changes from draft-vasters-json-structure-units-01
+{:numbered="false"}
+
+- Updated obsolete RFC 4646 reference to RFC 5646 (BCP 47).
+- Used correct term "language tag" instead of "language code" in symbols
+  section.
+- Broadened abstract opening to reflect full scope (symbols, currencies).
+- Added `ucumUnit` keyword for UCUM (Unified Code for Units of Measure)
+  notation support, enabling interoperability with healthcare and scientific
+  systems.
+
 # Changes from draft-vasters-json-structure-units-00
 {:numbered="false"}
 
