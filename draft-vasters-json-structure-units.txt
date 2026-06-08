@@ -77,8 +77,10 @@ Table of Contents
        3.1.1.  The symbols Keyword
    4.  Scientific Unit Annotations
      4.1.  The unit Keyword
-     4.2.  Unit Annotations
-     4.3.  Unit Prefixes
+     4.2.  The ucumUnit Keyword
+       4.2.1.  Compatibility with the unit Keyword
+     4.3.  Unit Annotations
+     4.4.  Unit Prefixes
    5.  Currency Annotations
      5.1.  The currency Keyword
      5.2.  Enabling the Annotations
@@ -250,7 +252,65 @@ Table of Contents
      "unit": "m/s^2"
    }
 
-4.2.  Unit Annotations
+4.2.  The ucumUnit Keyword
+
+   The ucumUnit keyword provides a mechanism for annotating a numeric
+   schema (or a schema based on a numeric extended type such as number,
+   int32, uint32, int64, uint64, int128, uint128, float, double, or
+   decimal) with its measurement unit using UCUM (Unified Code for Units
+   of Measure) [UCUM] notation.
+
+   The keyword MAY appear alongside the type keyword in object
+   properties or array items or map values.
+
+   *  The value of ucumUnit MUST be a JSON string.
+
+   *  The string value of ucumUnit MUST be a valid UCUM unit expression
+      as defined in the UCUM specification [UCUM].
+
+   *  UCUM codes MUST use the case-sensitive ("c/s") variant defined in
+      the UCUM specification.
+
+   *  The ucumUnit keyword MAY be used in conjunction with the unit
+      keyword.  When both are present, systems that support UCUM SHOULD
+      prefer the ucumUnit value for computation and conversion purposes.
+
+   *  The ucumUnit keyword MAY be used as an annotation on any schema
+      element whose underlying type is numeric.
+
+   Example:
+
+   {
+     "type": "number",
+     "unit": "m/s^2",
+     "ucumUnit": "m/s2",
+     "symbols": {
+       "default": "m/s²"
+     }
+   }
+
+   or
+
+   {
+     "type": "number",
+     "ucumUnit": "Cel",
+     "symbols": {
+       "default": "°C"
+     }
+   }
+
+4.2.1.  Compatibility with the unit Keyword
+
+   Schemas MAY include both unit and ucumUnit to support consumers that
+   understand either notation.
+
+   When both are present, the values SHOULD denote the same physical
+   quantity and unit.
+
+   Schema validators MUST NOT reject a schema solely because both
+   keywords are present.
+
+4.3.  Unit Annotations
 
    This is a list of common scientific units that MAY be used with the
    unit.  Units are defined according to ISO/IEC 80000, BIPM SI, and
@@ -320,7 +380,7 @@ Table of Contents
 
                                   Table 1
 
-4.3.  Unit Prefixes
+4.4.  Unit Prefixes
 
    The following SI prefixes MAY be used with base units:
 
@@ -517,6 +577,10 @@ Table of Contents
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [UCUM]     Schadow, G. and C. J. McDonald, "The Unified Code for
+              Units of Measure", 21 November 2017,
+              <https://ucum.org/ucum>.
 
 Changes from draft-vasters-json-structure-units-00
 

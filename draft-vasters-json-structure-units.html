@@ -1178,10 +1178,18 @@ precise mapping between schema representations and external data systems.<a href
                 <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-the-unit-keyword" class="internal xref">The <code>unit</code> Keyword</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-unit-annotations" class="internal xref">Unit Annotations</a></p>
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-the-ucumunit-keyword" class="internal xref">The <code>ucumUnit</code> Keyword</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.1">
+                    <p id="section-toc.1-1.4.2.2.2.1.1"><a href="#section-4.2.1" class="auto internal xref">4.2.1</a>.  <a href="#name-compatibility-with-the-unit" class="internal xref">Compatibility with the unit Keyword</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
-                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-unit-prefixes" class="internal xref">Unit Prefixes</a></p>
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-unit-annotations" class="internal xref">Unit Annotations</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-unit-prefixes" class="internal xref">Unit Prefixes</a></p>
 </li>
             </ul>
 </li>
@@ -1417,13 +1425,87 @@ or display numeric values appropriately.<a href="#section-4.1-6" class="pilcrow"
 </div>
 </section>
 </div>
-<div id="unit-annotations">
+<div id="ucum-unit-keyword">
 <section id="section-4.2">
-        <h3 id="name-unit-annotations">
-<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-unit-annotations" class="section-name selfRef">Unit Annotations</a>
+        <h3 id="name-the-ucumunit-keyword">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-the-ucumunit-keyword" class="section-name selfRef">The <code>ucumUnit</code> Keyword</a>
         </h3>
-<p id="section-4.2-1">This is a list of common scientific units that MAY be used with the <code>unit</code>.
-Units are defined according to ISO/IEC 80000, BIPM SI, and NIST HB44:<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-1">The <code>ucumUnit</code> keyword provides a mechanism for annotating a numeric schema
+(or a schema based on a numeric extended type such as <code>number</code>, <code>int32</code>,
+<code>uint32</code>, <code>int64</code>, <code>uint64</code>, <code>int128</code>, <code>uint128</code>, <code>float</code>, <code>double</code>, or
+<code>decimal</code>) with its measurement unit using UCUM (Unified Code for Units of
+Measure) <span>[<a href="#UCUM" class="cite xref">UCUM</a>]</span> notation.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-2">The keyword MAY appear alongside the <code>type</code> keyword in object properties or
+array items or map values.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.2-3.1">
+            <p id="section-4.2-3.1.1">The value of <code>ucumUnit</code> MUST be a JSON string.<a href="#section-4.2-3.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.2-3.2">
+            <p id="section-4.2-3.2.1">The string value of <code>ucumUnit</code> MUST be a valid UCUM unit expression as
+defined in the UCUM specification <span>[<a href="#UCUM" class="cite xref">UCUM</a>]</span>.<a href="#section-4.2-3.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.2-3.3">
+            <p id="section-4.2-3.3.1">UCUM codes MUST use the case-sensitive ("c/s") variant defined in the UCUM
+specification.<a href="#section-4.2-3.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.2-3.4">
+            <p id="section-4.2-3.4.1">The <code>ucumUnit</code> keyword MAY be used in conjunction with the <code>unit</code> keyword.
+When both are present, systems that support UCUM SHOULD prefer the
+<code>ucumUnit</code> value for computation and conversion purposes.<a href="#section-4.2-3.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.2-3.5">
+            <p id="section-4.2-3.5.1">The <code>ucumUnit</code> keyword MAY be used as an annotation on any schema element
+whose underlying type is numeric.<a href="#section-4.2-3.5.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-4.2-4">Example:<a href="#section-4.2-4" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-4.2-5">
+<pre>
+{
+  "type": "number",
+  "unit": "m/s^2",
+  "ucumUnit": "m/s2",
+  "symbols": {
+    "default": "m/s²"
+  }
+}
+</pre><a href="#section-4.2-5" class="pilcrow">¶</a>
+</div>
+<p id="section-4.2-6">or<a href="#section-4.2-6" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-4.2-7">
+<pre>
+{
+  "type": "number",
+  "ucumUnit": "Cel",
+  "symbols": {
+    "default": "°C"
+  }
+}
+</pre><a href="#section-4.2-7" class="pilcrow">¶</a>
+</div>
+<div id="ucum-unit-compatibility">
+<section id="section-4.2.1">
+          <h4 id="name-compatibility-with-the-unit">
+<a href="#section-4.2.1" class="section-number selfRef">4.2.1. </a><a href="#name-compatibility-with-the-unit" class="section-name selfRef">Compatibility with the unit Keyword</a>
+          </h4>
+<p id="section-4.2.1-1">Schemas MAY include both <code>unit</code> and <code>ucumUnit</code> to support consumers that
+understand either notation.<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-2">When both are present, the values SHOULD denote the same physical quantity and
+unit.<a href="#section-4.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-3">Schema validators MUST NOT reject a schema solely because both keywords are
+present.<a href="#section-4.2.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="unit-annotations">
+<section id="section-4.3">
+        <h3 id="name-unit-annotations">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-unit-annotations" class="section-name selfRef">Unit Annotations</a>
+        </h3>
+<p id="section-4.3-1">This is a list of common scientific units that MAY be used with the <code>unit</code>.
+Units are defined according to ISO/IEC 80000, BIPM SI, and NIST HB44:<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-1">
           <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
 <thead>
@@ -1640,11 +1722,11 @@ Units are defined according to ISO/IEC 80000, BIPM SI, and NIST HB44:<a href="#s
 </section>
 </div>
 <div id="unit-prefixes">
-<section id="section-4.3">
+<section id="section-4.4">
         <h3 id="name-unit-prefixes">
-<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-unit-prefixes" class="section-name selfRef">Unit Prefixes</a>
+<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-unit-prefixes" class="section-name selfRef">Unit Prefixes</a>
         </h3>
-<p id="section-4.3-1">The following SI prefixes MAY be used with base units:<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.4-1">The following SI prefixes MAY be used with base units:<a href="#section-4.4-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-2">
           <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
 <thead>
@@ -1722,31 +1804,31 @@ Units are defined according to ISO/IEC 80000, BIPM SI, and NIST HB44:<a href="#s
             </tr>
           </tbody>
         </table>
-<p id="section-4.3-3">Examples:<a href="#section-4.3-3" class="pilcrow">¶</a></p>
+<p id="section-4.4-3">Examples:<a href="#section-4.4-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.3-4.1">
-            <p id="section-4.3-4.1.1"><code>"km"</code>: Kilometers<a href="#section-4.3-4.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.4-4.1">
+            <p id="section-4.4-4.1.1"><code>"km"</code>: Kilometers<a href="#section-4.4-4.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-4.2">
-            <p id="section-4.3-4.2.1"><code>"mm"</code>: Millimeters<a href="#section-4.3-4.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.4-4.2">
+            <p id="section-4.4-4.2.1"><code>"mm"</code>: Millimeters<a href="#section-4.4-4.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-4.3">
-            <p id="section-4.3-4.3.1"><code>"μm"</code>: Micrometers<a href="#section-4.3-4.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.4-4.3">
+            <p id="section-4.4-4.3.1"><code>"μm"</code>: Micrometers<a href="#section-4.4-4.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-4.4">
-            <p id="section-4.3-4.4.1"><code>"nm"</code>: Nanometers<a href="#section-4.3-4.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.4-4.4">
+            <p id="section-4.4-4.4.1"><code>"nm"</code>: Nanometers<a href="#section-4.4-4.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-4.5">
-            <p id="section-4.3-4.5.1"><code>"ps"</code>: Picoseconds<a href="#section-4.3-4.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.4-4.5">
+            <p id="section-4.4-4.5.1"><code>"ps"</code>: Picoseconds<a href="#section-4.4-4.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-4.6">
-            <p id="section-4.3-4.6.1"><code>"mΩ"</code>: Milliohms<a href="#section-4.3-4.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.4-4.6">
+            <p id="section-4.4-4.6.1"><code>"mΩ"</code>: Milliohms<a href="#section-4.4-4.6.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-4.7">
-            <p id="section-4.3-4.7.1"><code>"kΩ"</code>: Kilohms<a href="#section-4.3-4.7.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.4-4.7">
+            <p id="section-4.4-4.7.1"><code>"kΩ"</code>: Kilohms<a href="#section-4.4-4.7.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-4.8">
-            <p id="section-4.3-4.8.1"><code>"MW"</code>: Megawatts<a href="#section-4.3-4.8.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.4-4.8">
+            <p id="section-4.4-4.8.1"><code>"MW"</code>: Megawatts<a href="#section-4.4-4.8.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1907,8 +1989,12 @@ standards (BIPM SI and NIST HB44) to ensure consistency.<a href="#section-6-1" c
 <span class="refAuthor">Phillips, A., Ed.</span> and <span class="refAuthor">M. Davis, Ed.</span>, <span class="refTitle">"Tags for Identifying Languages"</span>, <span class="seriesInfo">BCP 47</span>, <span class="seriesInfo">RFC 5646</span>, <span class="seriesInfo">DOI 10.17487/RFC5646</span>, <time datetime="2009-09" class="refDate">September 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5646">https://www.rfc-editor.org/rfc/rfc5646</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-    <dd>
+      <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="UCUM">[UCUM]</dt>
+    <dd>
+<span class="refAuthor">Schadow, G.</span> and <span class="refAuthor">C. J. McDonald</span>, <span class="refTitle">"The Unified Code for Units of Measure"</span>, <time datetime="2017-11-21" class="refDate">21 November 2017</time>, <span>&lt;<a href="https://ucum.org/ucum">https://ucum.org/ucum</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
