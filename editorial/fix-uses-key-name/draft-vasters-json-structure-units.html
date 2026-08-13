@@ -15,22 +15,23 @@ and constraints, primarily for use with numeric values.
 explicitly declare the unit associated with numeric data, thereby enabling
 precise mapping between schema representations and external data systems. 
     ' name="description">
-<meta content="xml2rfc 3.33.0" name="generator">
+<meta content="xml2rfc 3.34.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-vasters-json-structure-units-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.33.0
-    Python 3.12.13
-    ConfigArgParse 1.7
+  xml2rfc 3.34.0
+    Python 3.14.5
+    ConfigArgParse 1.7.5
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
-    lxml 6.0.2
-    platformdirs 4.9.6
+    lxml 6.1.1
+    natsort 8.4.0
+    platformdirs 4.11.0
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.7.0
+    wcwidth 0.8.2
 -->
 <link href="draft-vasters-json-structure-units.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -66,7 +67,6 @@ precise mapping between schema representations and external data systems.
   src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
-
 @font-face {
   font-family: 'Lora';
   font-style: italic;
@@ -115,7 +115,6 @@ precise mapping between schema representations and external data systems.
   src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
-
 @font-face {
   font-family: 'Lora';
   font-style: normal;
@@ -180,7 +179,6 @@ precise mapping between schema representations and external data systems.
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
 }
 
 @font-face {
@@ -1049,11 +1047,11 @@ svg {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">JSON Structure Units</td>
-<td class="right">December 2025</td>
+<td class="right">June 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Vasters</td>
-<td class="center">Expires 7 June 2026</td>
+<td class="center">Expires 11 December 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1066,12 +1064,12 @@ svg {
 <dd class="internet-draft">draft-vasters-json-structure-units-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-12-04" class="published">4 December 2025</time>
+<time datetime="2026-06-09" class="published">9 June 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-06-07">7 June 2026</time></dd>
+<dd class="expires"><time datetime="2026-12-11">11 December 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1123,7 +1121,7 @@ precise mapping between schema representations and external data systems.<a href
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 7 June 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1132,7 +1130,7 @@ precise mapping between schema representations and external data systems.<a href
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2025 IETF Trust and the persons identified as the
+            Copyright (c) 2026 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1885,7 +1883,7 @@ conforming to the <span>[<a href="#ISO_4217_2015" class="cite xref">ISO_4217_201
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-enabling-the-annotations" class="section-name selfRef">Enabling the Annotations</a>
         </h3>
 <p id="section-5.2-1">These annotations can be enabled in a schema or meta-schema by adding the
-<code>JSONSchemaUnits</code> key to the <code>$uses</code> clause when referencing the extended
+<code>JSONStructureUnits</code> key to the <code>$uses</code> clause when referencing the extended
 meta-schema:<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 <div class="lang-json sourcecode" id="section-5.2-2">
 <pre>
@@ -1893,7 +1891,7 @@ meta-schema:<a href="#section-5.2-1" class="pilcrow">¶</a></p>
   "$schema": "https://json-structure.org/meta/extended/v0/#",
   "$id": "myschema",
   "$uses": [
-    "JSONSchemaUnits"
+    "JSONStructureUnits"
   ],
   "type": "object",
   "properties": {
@@ -1951,10 +1949,6 @@ standards (BIPM SI and NIST HB44) to ensure consistency.<a href="#section-6-1" c
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
       </h2>
 <dl class="references">
-<dt id="IEC_80000-13_2025">[IEC_80000-13_2025]</dt>
-      <dd>
-<span class="refAuthor">International Electrotechnical Commission</span>, <span class="refTitle">"Quantities and units – Part 13: Information science"</span>, <span class="seriesInfo">IEC Standards IEC 80000-13:2025</span>, <time datetime="2025" class="refDate">2025</time>, <span>&lt;<a href="https://webstore.iec.ch/publication/IEC80000-13-2025">https://webstore.iec.ch/publication/IEC80000-13-2025</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="IEC_80000-1_2025">[IEC_80000-1_2025]</dt>
       <dd>
 <span class="refAuthor">International Electrotechnical Commission</span>, <span class="refTitle">"Quantities and units – Part 1: General"</span>, <span class="seriesInfo">IEC Standards IEC 80000-1:2025</span>, <time datetime="2025" class="refDate">2025</time>, <span>&lt;<a href="https://webstore.iec.ch/publication/IEC80000-1-2025">https://webstore.iec.ch/publication/IEC80000-1-2025</a>&gt;</span>. </dd>
@@ -1966,6 +1960,10 @@ standards (BIPM SI and NIST HB44) to ensure consistency.<a href="#section-6-1" c
 <dt id="IEC_80000-4_2025">[IEC_80000-4_2025]</dt>
       <dd>
 <span class="refAuthor">International Electrotechnical Commission</span>, <span class="refTitle">"Quantities and units – Part 4: Electricity and magnetism"</span>, <span class="seriesInfo">IEC Standards IEC 80000-4:2025</span>, <time datetime="2025" class="refDate">2025</time>, <span>&lt;<a href="https://webstore.iec.ch/publication/IEC80000-4-2025">https://webstore.iec.ch/publication/IEC80000-4-2025</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IEC_80000-13_2025">[IEC_80000-13_2025]</dt>
+      <dd>
+<span class="refAuthor">International Electrotechnical Commission</span>, <span class="refTitle">"Quantities and units – Part 13: Information science"</span>, <span class="seriesInfo">IEC Standards IEC 80000-13:2025</span>, <time datetime="2025" class="refDate">2025</time>, <span>&lt;<a href="https://webstore.iec.ch/publication/IEC80000-13-2025">https://webstore.iec.ch/publication/IEC80000-13-2025</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="IEEE_260.1_2024">[IEEE_260.1_2024]</dt>
       <dd>

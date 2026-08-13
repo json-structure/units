@@ -4,8 +4,8 @@
 
 Building Blocks for HTTP APIs                                 C. Vasters
 Internet-Draft                                     Microsoft Corporation
-Intended status: Standards Track                         4 December 2025
-Expires: 7 June 2026
+Intended status: Standards Track                             9 June 2026
+Expires: 11 December 2026
 
 
        JSON Structure: Symbols, Scientific Units, and Currencies
@@ -19,10 +19,10 @@ Abstract
    scientific unit and currency metadata and constraints, primarily for
    use with numeric values.
 
-   JSON Structure Scientific Units provides a mechanism for schema
-   authors to explicitly declare the unit associated with numeric data,
-   thereby enabling precise mapping between schema representations and
-   external data systems.
+   This extension provides a mechanism for schema authors to explicitly
+   declare the unit associated with numeric data, thereby enabling
+   precise mapping between schema representations and external data
+   systems.
 
 About This Document
 
@@ -52,11 +52,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 June 2026.
+   This Internet-Draft will expire on 11 December 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -77,14 +77,17 @@ Table of Contents
        3.1.1.  The symbols Keyword
    4.  Scientific Unit Annotations
      4.1.  The unit Keyword
-     4.2.  Unit Annotations
-     4.3.  Unit Prefixes
+     4.2.  The ucumUnit Keyword
+       4.2.1.  Compatibility with the unit Keyword
+     4.3.  Unit Annotations
+     4.4.  Unit Prefixes
    5.  Currency Annotations
      5.1.  The currency Keyword
      5.2.  Enabling the Annotations
    6.  Security and Interoperability Considerations
    7.  IANA Considerations
    8.  Normative References
+   Changes from draft-vasters-json-structure-units-01
    Changes from draft-vasters-json-structure-units-00
    Acknowledgments
    Author's Address
@@ -177,8 +180,7 @@ Table of Contents
    *  The keys of the symbols map MUST be strings that represent a
       purpose indicator.  The lang: prefix is reserved for language-
       specific symbols.  The suffix after the colon specifies the
-      language code.  The language code MUST conform to the [RFC4646]
-      standard.
+      language tag.  The language tag MUST conform to BCP 47 [RFC5646].
 
    *  The values of the symbols map MUST be strings that represent the
       symbol.
@@ -251,7 +253,65 @@ Table of Contents
      "unit": "m/s^2"
    }
 
-4.2.  Unit Annotations
+4.2.  The ucumUnit Keyword
+
+   The ucumUnit keyword provides a mechanism for annotating a numeric
+   schema (or a schema based on a numeric extended type such as number,
+   int32, uint32, int64, uint64, int128, uint128, float, double, or
+   decimal) with its measurement unit using UCUM (Unified Code for Units
+   of Measure) [UCUM] notation.
+
+   The keyword MAY appear alongside the type keyword in object
+   properties or array items or map values.
+
+   *  The value of ucumUnit MUST be a JSON string.
+
+   *  The string value of ucumUnit MUST be a valid UCUM unit expression
+      as defined in the UCUM specification [UCUM].
+
+   *  UCUM codes MUST use the case-sensitive ("c/s") variant defined in
+      the UCUM specification.
+
+   *  The ucumUnit keyword MAY be used in conjunction with the unit
+      keyword.  When both are present, systems that support UCUM SHOULD
+      prefer the ucumUnit value for computation and conversion purposes.
+
+   *  The ucumUnit keyword MAY be used as an annotation on any schema
+      element whose underlying type is numeric.
+
+   Example:
+
+   {
+     "type": "number",
+     "unit": "m/s^2",
+     "ucumUnit": "m/s2",
+     "symbols": {
+       "default": "m/s²"
+     }
+   }
+
+   or
+
+   {
+     "type": "number",
+     "ucumUnit": "Cel",
+     "symbols": {
+       "default": "°C"
+     }
+   }
+
+4.2.1.  Compatibility with the unit Keyword
+
+   Schemas MAY include both unit and ucumUnit to support consumers that
+   understand either notation.
+
+   When both are present, the values SHOULD denote the same physical
+   quantity and unit.
+
+   Schema validators MUST NOT reject a schema solely because both
+   keywords are present.
+
+4.3.  Unit Annotations
 
    This is a list of common scientific units that MAY be used with the
    unit.  Units are defined according to ISO/IEC 80000, BIPM SI, and
@@ -321,7 +381,7 @@ Table of Contents
 
                                   Table 1
 
-4.3.  Unit Prefixes
+4.4.  Unit Prefixes
 
    The following SI prefixes MAY be used with base units:
 
@@ -408,14 +468,14 @@ Table of Contents
 5.2.  Enabling the Annotations
 
    These annotations can be enabled in a schema or meta-schema by adding
-   the JSONSchemaUnits key to the $uses clause when referencing the
+   the JSONStructureUnits key to the $uses clause when referencing the
    extended meta-schema:
 
    {
      "$schema": "https://json-structure.org/meta/extended/v0/#",
      "$id": "myschema",
      "$uses": [
-       "JSONSchemaUnits"
+       "JSONStructureUnits"
      ],
      "type": "object",
      "properties": {
@@ -455,12 +515,6 @@ Table of Contents
 
 8.  Normative References
 
-   [IEC_80000-13_2025]
-              International Electrotechnical Commission, "Quantities and
-              units – Part 13: Information science", IEC Standards IEC
-              80000-13:2025, 2025,
-              <https://webstore.iec.ch/publication/IEC80000-13-2025>.
-
    [IEC_80000-1_2025]
               International Electrotechnical Commission, "Quantities and
               units – Part 1: General", IEC Standards IEC 80000-1:2025,
@@ -478,6 +532,12 @@ Table of Contents
               units – Part 4: Electricity and magnetism", IEC
               Standards IEC 80000-4:2025, 2025,
               <https://webstore.iec.ch/publication/IEC80000-4-2025>.
+
+   [IEC_80000-13_2025]
+              International Electrotechnical Commission, "Quantities and
+              units – Part 13: Information science", IEC Standards IEC
+              80000-13:2025, 2025,
+              <https://webstore.iec.ch/publication/IEC80000-13-2025>.
 
    [IEEE_260.1_2024]
               Institute of Electrical and Electronics Engineers, "IEEE
@@ -511,13 +571,31 @@ Table of Contents
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
 
-   [RFC4646]  Phillips, A. and M. Davis, "Tags for Identifying
-              Languages", RFC 4646, DOI 10.17487/RFC4646, September
-              2006, <https://www.rfc-editor.org/rfc/rfc4646>.
+   [RFC5646]  Phillips, A., Ed. and M. Davis, Ed., "Tags for Identifying
+              Languages", BCP 47, RFC 5646, DOI 10.17487/RFC5646,
+              September 2009, <https://www.rfc-editor.org/rfc/rfc5646>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [UCUM]     Schadow, G. and C. J. McDonald, "The Unified Code for
+              Units of Measure", 21 November 2017,
+              <https://ucum.org/ucum>.
+
+Changes from draft-vasters-json-structure-units-01
+
+   *  Updated obsolete RFC 4646 reference to RFC 5646 (BCP 47).
+
+   *  Used correct term "language tag" instead of "language code" in
+      symbols section.
+
+   *  Broadened abstract opening to reflect full scope (symbols,
+      currencies).
+
+   *  Added ucumUnit keyword for UCUM (Unified Code for Units of
+      Measure) notation support, enabling interoperability with
+      healthcare and scientific systems.
 
 Changes from draft-vasters-json-structure-units-00
 
