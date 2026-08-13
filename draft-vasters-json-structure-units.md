@@ -416,7 +416,7 @@ Example:
 ## Enabling the Annotations {#enabling-the-annotations}
 
 These annotations can be enabled in a schema or meta-schema by adding the
-`JSONSchemaUnits` key to the `$uses` clause when referencing the extended
+`JSONStructureUnits` key to the `$uses` clause when referencing the extended
 meta-schema:
 
 ~~~ json
@@ -424,7 +424,7 @@ meta-schema:
   "$schema": "https://json-structure.org/meta/extended/v0/#",
   "$id": "myschema",
   "$uses": [
-    "JSONSchemaUnits"
+    "JSONStructureUnits"
   ],
   "type": "object",
   "properties": {
